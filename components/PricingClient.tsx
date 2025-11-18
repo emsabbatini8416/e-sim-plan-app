@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import type { PricingData } from '@/lib/pricing';
 import CountryDropdown from './CountryDropdown';
 import DataPlanTabs from './DataPlanTabs';
@@ -39,6 +40,7 @@ export default function PricingClient({
   const [selectedGb, setSelectedGb] = useState<string | null>(null);
   const [selectedDays, setSelectedDays] = useState<number | null>(null);
   const [currentPricing, setCurrentPricing] = useState<PricingData | null>(null);
+  const router = useRouter();
 
   const availableGbOptions = useMemo(() => {
     if (!selectedCountry) return [];
@@ -104,13 +106,14 @@ export default function PricingClient({
 
   const handleCheckout = () => {
     if (selectedCountry && selectedDays && currentPricing) {
-      console.log('Checkout:', {
+      const params = new URLSearchParams({
         country: currentPricing.country,
         countryCode: currentPricing.countryCode,
-        days: selectedDays,
-        price: currentPricing.price,
+        days: selectedDays.toString(),
+        price: currentPricing.price.toString(),
         gb: currentPricing.gb,
       });
+      router.push(`/checkout?${params.toString()}`);
     }
   };
 

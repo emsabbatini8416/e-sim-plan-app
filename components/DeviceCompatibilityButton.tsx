@@ -1,10 +1,13 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import Button from './ui/Button';
 
 export default function DeviceCompatibilityButton() {
+  const router = useRouter();
+
   const handleClick = () => {
-    console.log('Check device compatibility');
+    router.push('/device-compatibility');
   };
 
   return (
